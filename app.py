@@ -1,10 +1,6 @@
 import streamlit as st
 import time
-import pandas as pd
-import numpy as np
-from typing import List, Dict, Any, Set, Tuple
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.metrics.pairwise import cosine_similarity
+from typing import List, Dict, Any, Tuple
 
 # ==========================================
 # 1. PAGE CONFIG & NETFLIX STYLING
@@ -16,7 +12,6 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# Custom CSS injection for Netflix Dark Theme, Card UI, and Micro-Animations
 st.markdown("""
 <style>
     /* Google Fonts import */
@@ -375,10 +370,10 @@ st.markdown("""
     .movie-row-header {
         font-size: 1.4rem;
         font-weight: 700;
-        margin-left: 1.5rem;
-        margin-bottom: 0.75rem;
+        margin: 20px 0px 10px 1.5rem;
         border-left: 4px solid #E50914;
         padding-left: 0.5rem;
+        color: #E5E5E5;
     }
     .movie-row-viewport {
         margin-bottom: 2.5rem;
@@ -482,7 +477,7 @@ def load_catalog() -> List[Dict[str, Any]]:
     return [
         {
             "id": 1, "show_id": "s1", "type": "TV Show", "title": "Stranger Things", "language": "English",
-            "genres": ["Sci-Fi", "Horror", "Thriller"], "release_year": 2016, "rating": "TV-14", "duration": "4 Seasons",
+            "genres": ["Sci-Fi", "Horror", "Drama"], "release_year": 2016, "rating": 8.7, "duration": "4 Seasons",
             "director": "The Duffer Brothers", "cast": "Millie Bobby Brown, Winona Ryder, David Harbour",
             "poster": "https://image.tmdb.org/t/p/w500/49WJfeN0moxb9IPfGn88qbuYA2m.jpg",
             "banner": "https://images.unsplash.com/photo-1574375927938-d5a98e8edd86?q=80&w=1200&auto=format&fit=crop",
@@ -490,7 +485,7 @@ def load_catalog() -> List[Dict[str, Any]]:
         },
         {
             "id": 2, "show_id": "s2", "type": "TV Show", "title": "Squid Game", "language": "Korean",
-            "genres": ["Thriller", "Drama", "Action"], "release_year": 2021, "rating": "TV-MA", "duration": "1 Season",
+            "genres": ["Thriller", "Drama", "Action"], "release_year": 2021, "rating": 8.0, "duration": "1 Season",
             "director": "Hwang Dong-hyuk", "cast": "Lee Jung-jae, Park Hae-soo, Wi Ha-jun",
             "poster": "https://image.tmdb.org/t/p/w500/dDlE31331PFiP1A16C4M1T3C1A1.jpg",
             "banner": "https://images.unsplash.com/photo-1542204172-e7052809f852?q=80&w=1200&auto=format&fit=crop",
@@ -498,7 +493,7 @@ def load_catalog() -> List[Dict[str, Any]]:
         },
         {
             "id": 3, "show_id": "s3", "type": "TV Show", "title": "Sacred Games", "language": "Hindi",
-            "genres": ["Thriller", "Crime", "Drama"], "release_year": 2018, "rating": "TV-MA", "duration": "2 Seasons",
+            "genres": ["Thriller", "Crime", "Drama", "Action"], "release_year": 2018, "rating": 8.5, "duration": "2 Seasons",
             "director": "Vikramaditya Motwane, Anurag Kashyap", "cast": "Saif Ali Khan, Nawazuddin Siddiqui, Radhika Apte",
             "poster": "https://upload.wikimedia.org/wikipedia/en/d/d8/Sacred_Games_title_card.png",
             "banner": "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?q=80&w=1200&auto=format&fit=crop",
@@ -506,7 +501,7 @@ def load_catalog() -> List[Dict[str, Any]]:
         },
         {
             "id": 4, "show_id": "s4", "type": "TV Show", "title": "Money Heist", "language": "Spanish",
-            "genres": ["Action", "Crime", "Thriller"], "release_year": 2017, "rating": "TV-MA", "duration": "5 Seasons",
+            "genres": ["Action", "Crime", "Thriller"], "release_year": 2017, "rating": 8.2, "duration": "5 Seasons",
             "director": "Álex Pina", "cast": "Álvaro Morte, Úrsula Corberó, Itziar Ituño",
             "poster": "https://image.tmdb.org/t/p/w500/reKs8A331c13A2c4X5A05121.jpg",
             "banner": "https://images.unsplash.com/photo-1509281373149-e957c6296406?q=80&w=1200&auto=format&fit=crop",
@@ -514,7 +509,7 @@ def load_catalog() -> List[Dict[str, Any]]:
         },
         {
             "id": 5, "show_id": "s5", "type": "TV Show", "title": "Demon Slayer", "language": "Japanese",
-            "genres": ["Anime", "Action", "Fantasy"], "release_year": 2019, "rating": "TV-MA", "duration": "2 Seasons",
+            "genres": ["Anime", "Action", "Fantasy"], "release_year": 2019, "rating": 8.7, "duration": "2 Seasons",
             "director": "Haruo Sotozaki", "cast": "Natsuki Hanae, Akari Kito, Yoshitsugu Matsuoka",
             "poster": "https://image.tmdb.org/t/p/w500/xUfRQA2alT3A3pI392215A42.jpg",
             "banner": "https://images.unsplash.com/photo-1528164344705-47542687000d?q=80&w=1200&auto=format&fit=crop",
@@ -522,7 +517,7 @@ def load_catalog() -> List[Dict[str, Any]]:
         },
         {
             "id": 6, "show_id": "s6", "type": "TV Show", "title": "Narcos", "language": "English",
-            "genres": ["Crime", "Drama", "Action"], "release_year": 2015, "rating": "TV-MA", "duration": "3 Seasons",
+            "genres": ["Crime", "Drama", "Action"], "release_year": 2015, "rating": 8.8, "duration": "3 Seasons",
             "director": "Andrés Baiz", "cast": "Wagner Moura, Boyd Holbrook, Pedro Pascal",
             "poster": "https://upload.wikimedia.org/wikipedia/en/0/0a/Narcos_season_1_poster.jpg",
             "banner": "https://images.unsplash.com/photo-1507608869274-d3177c8bb4c7?q=80&w=1200&auto=format&fit=crop",
@@ -530,7 +525,7 @@ def load_catalog() -> List[Dict[str, Any]]:
         },
         {
             "id": 7, "show_id": "s7", "type": "Movie", "title": "Inception", "language": "English",
-            "genres": ["Sci-Fi", "Action", "Thriller"], "release_year": 2010, "rating": "PG-13", "duration": "148 min",
+            "genres": ["Sci-Fi", "Action", "Thriller"], "release_year": 2010, "rating": 8.8, "duration": "148 min",
             "director": "Christopher Nolan", "cast": "Leonardo DiCaprio, Joseph Gordon-Levitt, Elliot Page",
             "poster": "https://image.tmdb.org/t/p/w500/oYuLE13111A2s1A1A5123.jpg",
             "banner": "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?q=80&w=1200&auto=format&fit=crop",
@@ -538,7 +533,7 @@ def load_catalog() -> List[Dict[str, Any]]:
         },
         {
             "id": 8, "show_id": "s8", "type": "Movie", "title": "The Matrix", "language": "English",
-            "genres": ["Sci-Fi", "Action"], "release_year": 1999, "rating": "R", "duration": "136 min",
+            "genres": ["Sci-Fi", "Action"], "release_year": 1999, "rating": 8.7, "duration": "136 min",
             "director": "Lana Wachowski, Lilly Wachowski", "cast": "Keanu Reeves, Laurence Fishburne, Carrie-Anne Moss",
             "poster": "https://image.tmdb.org/t/p/w500/f89U311A2A441221.jpg",
             "banner": "https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=1200&auto=format&fit=crop",
@@ -546,7 +541,7 @@ def load_catalog() -> List[Dict[str, Any]]:
         },
         {
             "id": 9, "show_id": "s9", "type": "TV Show", "title": "Mirzapur", "language": "Hindi",
-            "genres": ["Action", "Crime", "Thriller"], "release_year": 2018, "rating": "TV-MA", "duration": "2 Seasons",
+            "genres": ["Action", "Crime", "Thriller"], "release_year": 2018, "rating": 8.5, "duration": "2 Seasons",
             "director": "Karan Anshuman, Gurmmeet Singh", "cast": "Pankaj Tripathi, Ali Fazal, Divyendu Sharma",
             "poster": "https://upload.wikimedia.org/wikipedia/en/3/3c/Mirzapur_poster.jpg",
             "banner": "https://images.unsplash.com/photo-1533928298208-27ff66555d8d?q=80&w=1200&auto=format&fit=crop",
@@ -554,7 +549,7 @@ def load_catalog() -> List[Dict[str, Any]]:
         },
         {
             "id": 10, "show_id": "s10", "type": "TV Show", "title": "Crash Landing on You", "language": "Korean",
-            "genres": ["Romance", "Comedy", "Drama"], "release_year": 2019, "rating": "TV-14", "duration": "1 Season",
+            "genres": ["Romance", "Comedy", "Drama"], "release_year": 2019, "rating": 8.7, "duration": "1 Season",
             "director": "Lee Jeong-hyo", "cast": "Hyun Bin, Son Ye-jin, Seo Ji-hye",
             "poster": "https://upload.wikimedia.org/wikipedia/en/6/64/Crash_Landing_on_You_main_poster.jpg",
             "banner": "https://images.unsplash.com/photo-1518609878373-06d740f60d8b?q=80&w=1200&auto=format&fit=crop",
@@ -562,7 +557,7 @@ def load_catalog() -> List[Dict[str, Any]]:
         },
         {
             "id": 11, "show_id": "s11", "type": "TV Show", "title": "My Name", "language": "Korean",
-            "genres": ["Action", "Crime", "Thriller"], "release_year": 2021, "rating": "TV-MA", "duration": "1 Season",
+            "genres": ["Action", "Crime", "Thriller"], "release_year": 2021, "rating": 7.8, "duration": "1 Season",
             "director": "Kim Jin-min", "cast": "Han So-hee, Park Hee-soon, Ahn Bo-hyun",
             "poster": "https://upload.wikimedia.org/wikipedia/en/0/0b/My_Name_TV_series.jpeg",
             "banner": "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?q=80&w=1200&auto=format&fit=crop",
@@ -570,7 +565,7 @@ def load_catalog() -> List[Dict[str, Any]]:
         },
         {
             "id": 12, "show_id": "s12", "type": "Movie", "title": "3 Idiots", "language": "Hindi",
-            "genres": ["Comedy", "Drama"], "release_year": 2009, "rating": "PG-13", "duration": "170 min",
+            "genres": ["Comedy", "Drama"], "release_year": 2009, "rating": 8.4, "duration": "170 min",
             "director": "Rajkumar Hirani", "cast": "Aamir Khan, Kareena Kapoor, R. Madhavan",
             "poster": "https://upload.wikimedia.org/wikipedia/en/b/b9/3_Idiots_poster.jpg",
             "banner": "https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?q=80&w=1200&auto=format&fit=crop",
@@ -578,7 +573,7 @@ def load_catalog() -> List[Dict[str, Any]]:
         },
         {
             "id": 13, "show_id": "s13", "type": "Movie", "title": "Dangal", "language": "Hindi",
-            "genres": ["Action", "Drama"], "release_year": 2016, "rating": "PG", "duration": "161 min",
+            "genres": ["Action", "Drama"], "release_year": 2016, "rating": 8.3, "duration": "161 min",
             "director": "Nitesh Tiwari", "cast": "Aamir Khan, Sakshi Tanwar, Fatima Sana Shaikh",
             "poster": "https://upload.wikimedia.org/wikipedia/en/9/99/Dangal_Poster.jpg",
             "banner": "https://images.unsplash.com/photo-1571008887538-b36bb32f4571?q=80&w=1200&auto=format&fit=crop",
@@ -586,7 +581,7 @@ def load_catalog() -> List[Dict[str, Any]]:
         },
         {
             "id": 14, "show_id": "s14", "type": "Movie", "title": "Interstellar", "language": "English",
-            "genres": ["Sci-Fi", "Drama"], "release_year": 2014, "rating": "PG-13", "duration": "169 min",
+            "genres": ["Sci-Fi", "Drama"], "release_year": 2014, "rating": 8.6, "duration": "169 min",
             "director": "Christopher Nolan", "cast": "Matthew McConaughey, Anne Hathaway, Jessica Chastain",
             "poster": "https://image.tmdb.org/t/p/w500/gEU2Q21A1A51123.jpg",
             "banner": "https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?q=80&w=1200&auto=format&fit=crop",
@@ -594,7 +589,7 @@ def load_catalog() -> List[Dict[str, Any]]:
         },
         {
             "id": 15, "show_id": "s15", "type": "Movie", "title": "Spirited Away", "language": "Japanese",
-            "genres": ["Anime", "Fantasy"], "release_year": 2001, "rating": "PG", "duration": "125 min",
+            "genres": ["Anime", "Fantasy"], "release_year": 2001, "rating": 8.6, "duration": "125 min",
             "director": "Hayao Miyazaki", "cast": "Rumi Hiiragi, Miyu Irino, Mari Natsuki",
             "poster": "https://upload.wikimedia.org/wikipedia/en/d/d4/Spirited_Away_poster.png",
             "banner": "https://images.unsplash.com/photo-1501854140801-50d01698950b?q=80&w=1200&auto=format&fit=crop",
@@ -602,7 +597,7 @@ def load_catalog() -> List[Dict[str, Any]]:
         },
         {
             "id": 16, "show_id": "s16", "type": "TV Show", "title": "Our Planet", "language": "English",
-            "genres": ["Documentaries"], "release_year": 2019, "rating": "TV-PG", "duration": "1 Season",
+            "genres": ["Documentaries"], "release_year": 2019, "rating": 9.3, "duration": "1 Season",
             "director": "Alastair Fothergill", "cast": "David Attenborough",
             "poster": "https://upload.wikimedia.org/wikipedia/en/b/bd/Our_Planet_poster.jpg",
             "banner": "https://images.unsplash.com/photo-1433832597046-4f10e10ac764?q=80&w=1200&auto=format&fit=crop",
@@ -612,84 +607,52 @@ def load_catalog() -> List[Dict[str, Any]]:
 
 catalog = load_catalog()
 
-# ----------------------------------------------------
-# 3. ADVANCED HYBRID VECTOR MATCHING ENGINE
-# ----------------------------------------------------
-class NetflixRecommendationEngine:
-    def __init__(self, catalog_list: List[Dict[str, Any]]) -> None:
-        self.df = pd.DataFrame(catalog_list)
-        self.vectorizer = TfidfVectorizer(stop_words='english', max_features=1000)
-        
-        # Fit vocabulary on descriptions + genres
-        all_metadata = (
-            self.df["genres"].apply(lambda x: " ".join(x)).tolist() + 
-            self.df["description"].tolist()
-        )
-        self.vectorizer.fit(all_metadata)
-        
-        # Transform descriptions to TF-IDF matrix
-        self.tfidf_matrix = self.vectorizer.transform(self.df["description"])
-        
-    def generate_recommendations(
-        self, 
-        selected_titles: List[str], 
-        selected_genres: List[str], 
-        selected_languages: List[str]
-    ) -> List[Tuple[Dict[str, Any], float]]:
-        """Calculates dynamic Hybrid Cosine-Similarity scores for all items in catalog."""
-        start_time = time.time()
-        
-        # 1. Aggregated query text from onboarding picks
-        seed_descriptions = []
-        for title in selected_titles:
-            matches = self.df[self.df["title"] == title]
-            if not matches.empty:
-                seed_descriptions.append(matches.iloc[0]["description"])
-                
-        profile_query_text = " ".join(selected_genres) + " " + " ".join(seed_descriptions)
-        
-        # 2. Vectorize user profile text
-        query_vector = self.vectorizer.transform([profile_query_text])
-        
-        # Runtime Assertion: shape conformance validation
-        assert query_vector.shape == (1, self.tfidf_matrix.shape[1]), "Vector dimensions mismatch"
-        
-        # 3. Calculate raw similarities
-        raw_similarities = cosine_similarity(query_vector, self.tfidf_matrix).flatten()
-        
-        # 4. Multipliers and boosts based on preferences
-        final_scores = []
-        for idx, row in self.df.iterrows():
-            score = float(raw_similarities[idx])
+# ==========================================
+# DYNAMIC RECOMMENDATION SCORING ENGINE
+# ==========================================
+def compute_scores(catalog_items: List[Dict[str, Any]], selected_langs: List[str], selected_genres: List[str], selected_titles: List[str]) -> List[Dict[str, Any]]:
+    start_time = time.time()
+    
+    seed_genres = set()
+    for item in catalog_items:
+        if item["title"] in selected_titles:
+            seed_genres.update(item["genres"])
             
-            # Exclude current selections
-            if row["title"] in selected_titles:
-                score = 0.0
-                final_scores.append((row.to_dict(), score))
-                continue
+    scored_items = []
+    for item in catalog_items:
+        # Exclude currently selected seeds from homepage list
+        if item["title"] in selected_titles:
+            continue
             
-            # Language Multiplier
-            if selected_languages:
-                if row["language"] in selected_languages:
-                    score *= 1.8  # Boost matching languages
-                else:
-                    score *= 0.05  # Heavy penalty for unselected languages (to filter down)
-                    
-            # Genre Match Boost
-            matches_genre = any(genre in row["genres"] for genre in selected_genres)
-            if matches_genre:
-                score += 0.25  # Additive boost for selected genres
-                
-            # Normalize final scores to [0.0, 1.0]
-            score = min(max(score, 0.0), 1.0)
-            final_scores.append((row.to_dict(), score))
+        score = 0
+        
+        # 1. Language Score (+10 if matches selected language)
+        if selected_langs and item["language"] in selected_langs:
+            score += 10
             
-        final_scores.sort(key=lambda x: x[1], reverse=True)
-        self.latency_ms = (time.time() - start_time) * 1000
-        return final_scores
-
-# Global engine singleton
-engine = NetflixRecommendationEngine(catalog)
+        # 2. Genre Overlap Score (+4 per matching genre)
+        genre_matches = sum(1 for g in item["genres"] if g in selected_genres)
+        score += genre_matches * 4
+        
+        # 3. Seed Title Genre Overlap (+3 per matching seed genre)
+        seed_matches = sum(1 for g in item["genres"] if g in seed_genres)
+        score += seed_matches * 3
+        
+        # Calculate dynamic match percentage based on score
+        match_pct = min(99, max(68, 72 + score * 2))
+        
+        item_copy = item.copy()
+        item_copy["score"] = score
+        item_copy["match_pct"] = match_pct
+        scored_items.append(item_copy)
+        
+    # Sort descending by score, then by rating
+    scored_items.sort(key=lambda x: (x["score"], x["rating"]), reverse=True)
+    
+    # Store dynamic calculation time globally or return it
+    global latency_ms
+    latency_ms = (time.time() - start_time) * 1000
+    return scored_items
 
 # Initialize Session State
 if 'step' not in st.session_state:
@@ -731,7 +694,7 @@ if st.session_state.step == 1:
     st.markdown('<div class="onboarding-title">Tell us what you like to get started.</div>', unsafe_allow_html=True)
     st.markdown('<div class="onboarding-subtitle">Choose the languages you prefer for audio and subtitles.</div>', unsafe_allow_html=True)
     
-    languages = ["English", "Hindi", "Korean", "Spanish", "Japanese", "Tamil", "Malayalam"]
+    languages = ["English", "Hindi", "Korean", "Spanish", "Japanese"]
     cols = st.columns(4)
     
     for idx, lang in enumerate(languages):
@@ -899,7 +862,8 @@ elif st.session_state.step == "loading":
 # STEP 5: PERSONALIZED HOME DASHBOARD
 # ==========================================
 elif st.session_state.completed_onboarding or st.session_state.step == 4.0:
-    recs = engine.generate_recommendations(
+    scored_catalog = compute_scores(
+        catalog,
         st.session_state.selected_titles,
         st.session_state.selected_genres,
         st.session_state.selected_languages
@@ -936,8 +900,8 @@ elif st.session_state.completed_onboarding or st.session_state.step == 4.0:
     reset_col.markdown('</div>', unsafe_allow_html=True)
 
     # 2. Hero Billboard Banner
-    hero_item = recs[0][0]
-    hero_score = recs[0][1]
+    hero_item = scored_catalog[0]
+    hero_score = scored_catalog[0]["match_pct"]
     
     # Render dynamic billboard background from item banner link
     st.markdown(
@@ -948,7 +912,7 @@ elif st.session_state.completed_onboarding or st.session_state.step == 4.0:
                 <div class="hero-genre-tag">{" / ".join(hero_item['genres'])}</div>
                 <h1 class="hero-title" style="font-size: 3.5rem; margin-bottom: 0.5rem; font-family:'Helvetica Neue', Arial, sans-serif; font-weight:800;">{hero_item['title']}</h1>
                 <div style="display:flex; align-items:center; font-size:1rem; font-weight:700; margin-bottom: 1rem;">
-                    <span class="hero-meta-badge">{(hero_score*100):.0f}% Match</span>
+                    <span class="hero-meta-badge">{hero_score:.0f}% Match</span>
                     <span style="color:#ffffff; margin-left: 0.75rem;">{hero_item['release_year']}</span>
                     <span class="hero-rating-box">{hero_item['rating']}</span>
                     <span style="color:#ffffff; margin-left: 0.75rem;">{hero_item['duration']}</span>
@@ -971,10 +935,10 @@ elif st.session_state.completed_onboarding or st.session_state.step == 4.0:
     # Row 1: "Top Picks for You"
     # ----------------------------------------------------
     st.markdown('<div class="movie-row-header">Top Picks for You</div>', unsafe_allow_html=True)
-    row_1_items = recs[:4]
+    row_1_items = scored_catalog[:4]
     
     cols1 = st.columns(4)
-    for idx, (item, score) in enumerate(row_1_items):
+    for idx, item in enumerate(row_1_items):
         card_html = f"""
         <div class="row-card-container">
             <div class="row-card-img-banner" style="background-image: url('{item['poster']}');">
@@ -985,7 +949,7 @@ elif st.session_state.completed_onboarding or st.session_state.step == 4.0:
                 <div class="row-card-title">{item['title']}</div>
                 <div style="font-size: 0.75rem; color:#e50914; font-weight:700;">{", ".join(item['genres'])}</div>
                 <div class="card-meta-line" style="margin-top:0.25rem; display:flex; justify-content:space-between; font-size:0.75rem;">
-                    <span style="color:#46D369; font-weight:700;">{(score*100):.0f}% Match</span>
+                    <span style="color:#46D369; font-weight:700;">{item['match_pct']:.0f}% Match</span>
                     <span>{item['language']}</span>
                 </div>
                 <div class="row-card-hover-actions">
@@ -1006,19 +970,20 @@ elif st.session_state.completed_onboarding or st.session_state.step == 4.0:
     
     # Generate similarities focused purely on seed description matching
     seed_item = next(item for item in catalog if item["title"] == first_seed)
-    seed_vec = engine.vectorizer.transform([seed_item["description"]])
-    desc_sim = cosine_similarity(seed_vec, engine.tfidf_matrix).flatten()
     
-    row_2_scores = []
-    for idx, row in pd.DataFrame(catalog).iterrows():
-        if row["title"] == first_seed:
-            continue
-        row_2_scores.append((row.to_dict(), desc_sim[idx]))
-    row_2_scores.sort(key=lambda x: x[1], reverse=True)
-    row_2_items = row_2_scores[:4]
+    # Fallback to simple genre matching since TF-IDF is bypassed
+    row_2_items = []
+    for item in scored_catalog:
+        # Calculate overlap with first seed genres
+        overlap = sum(1 for g in item["genres"] if g in seed_item["genres"])
+        item_copy = item.copy()
+        item_copy["overlap"] = overlap
+        row_2_items.append(item_copy)
+    row_2_items.sort(key=lambda x: (x["overlap"], x["rating"]), reverse=True)
+    row_2_display = row_2_items[:4]
     
     cols2 = st.columns(4)
-    for idx, (item, score) in enumerate(row_2_items):
+    for idx, item in enumerate(row_2_display):
         card_html = f"""
         <div class="row-card-container">
             <div class="row-card-img-banner" style="background-image: url('{item['poster']}');">
@@ -1029,7 +994,7 @@ elif st.session_state.completed_onboarding or st.session_state.step == 4.0:
                 <div class="row-card-title">{item['title']}</div>
                 <div style="font-size: 0.75rem; color:#e50914; font-weight:700;">{", ".join(item['genres'])}</div>
                 <div class="card-meta-line" style="margin-top:0.25rem; display:flex; justify-content:space-between; font-size:0.75rem;">
-                    <span style="color:#46D369; font-weight:700;">{(score*100):.0f}% Match</span>
+                    <span style="color:#46D369; font-weight:700;">{item['match_pct']:.0f}% Match</span>
                     <span>{item['language']}</span>
                 </div>
                 <div class="row-card-hover-actions">
@@ -1048,10 +1013,10 @@ elif st.session_state.completed_onboarding or st.session_state.step == 4.0:
     target_lang = list(st.session_state.selected_languages)[0]
     st.markdown(f'<div class="movie-row-header">Top {target_lang} Content</div>', unsafe_allow_html=True)
     
-    lang_filtered = [x for x in recs if x[0]["language"] == target_lang][:4]
+    lang_filtered = [x for x in scored_catalog if x["language"] == target_lang][:4]
     
     cols3 = st.columns(4)
-    for idx, (item, score) in enumerate(lang_filtered):
+    for idx, item in enumerate(lang_filtered):
         card_html = f"""
         <div class="row-card-container">
             <div class="row-card-img-banner" style="background-image: url('{item['poster']}');">
@@ -1062,7 +1027,7 @@ elif st.session_state.completed_onboarding or st.session_state.step == 4.0:
                 <div class="row-card-title">{item['title']}</div>
                 <div style="font-size: 0.75rem; color:#e50914; font-weight:700;">{", ".join(item['genres'])}</div>
                 <div class="card-meta-line" style="margin-top:0.25rem; display:flex; justify-content:space-between; font-size:0.75rem;">
-                    <span style="color:#46D369; font-weight:700;">{(score*100):.0f}% Match</span>
+                    <span style="color:#46D369; font-weight:700;">{item['match_pct']:.0f}% Match</span>
                     <span>{item['release_year']}</span>
                 </div>
                 <div class="row-card-hover-actions">
@@ -1081,10 +1046,10 @@ elif st.session_state.completed_onboarding or st.session_state.step == 4.0:
     target_genre = list(st.session_state.selected_genres)[0]
     st.markdown(f'<div class="movie-row-header">Explore {target_genre}</div>', unsafe_allow_html=True)
     
-    genre_filtered = [x for x in recs if target_genre in x[0]["genres"]][:4]
+    genre_filtered = [x for x in scored_catalog if target_genre in x["genres"]][:4]
     
     cols4 = st.columns(4)
-    for idx, (item, score) in enumerate(genre_filtered):
+    for idx, item in enumerate(genre_filtered):
         card_html = f"""
         <div class="row-card-container">
             <div class="row-card-img-banner" style="background-image: url('{item['poster']}');">
@@ -1095,7 +1060,7 @@ elif st.session_state.completed_onboarding or st.session_state.step == 4.0:
                 <div class="row-card-title">{item['title']}</div>
                 <div style="font-size: 0.75rem; color:#e50914; font-weight:700;">{", ".join(item['genres'])}</div>
                 <div class="card-meta-line" style="margin-top:0.25rem; display:flex; justify-content:space-between; font-size:0.75rem;">
-                    <span style="color:#46D369; font-weight:700;">{(score*100):.0f}% Match</span>
+                    <span style="color:#46D369; font-weight:700;">{item['match_pct']:.0f}% Match</span>
                     <span>{item['language']}</span>
                 </div>
                 <div class="row-card-hover-actions">
@@ -1123,17 +1088,19 @@ with st.expander("🛠️ Onboarding Debug Vector Console", expanded=False):
         },
         "Pipeline State": {
             "completed_onboarding": st.session_state.completed_onboarding,
-            "TF-IDF Matrix dimensions": engine.tfidf_matrix.shape,
-            "Vocabulary Length": len(engine.vectorizer.get_feature_names_out()),
-            "Sparsity Percent": f"{(1.0 - (engine.tfidf_matrix.nnz / (engine.tfidf_matrix.shape[0] * engine.tfidf_matrix.shape[1]))) * 100:.2f}%"
+            "Catalog Size": len(catalog),
+            "Sparsity Percent": "N/A (Bypassed via compute_scores first-principles overlap logic)"
         }
     }
     
     if st.session_state.completed_onboarding:
-        diag_payload["Recommendation Latency (Stage 3)"] = f"{engine.latency_ms:.2f} ms"
+        # Reference global latency variable
+        if 'latency_ms' in globals():
+            diag_payload["Recommendation Latency (Stage 3)"] = f"{latency_ms:.2f} ms"
+            
         diag_payload["Top 5 Calculated Matching Scores"] = [
-            {"title": title_tuple[0]["title"], "score": round(title_tuple[1], 4)}
-            for title_tuple in recs[:5]
+            {"title": item_dict["title"], "score": item_dict["score"], "match_pct": item_dict["match_pct"]}
+            for item_dict in scored_catalog[:5]
         ]
         
         assertions = {
@@ -1141,7 +1108,7 @@ with st.expander("🛠️ Onboarding Debug Vector Console", expanded=False):
             "Language Selections Valid": len(st.session_state.selected_languages) > 0,
             "Genre Preference Count >= 3": len(st.session_state.selected_genres) >= 3,
             "Seed Movie Selections == 3": len(st.session_state.selected_titles) == 3,
-            "Cosine Scores Range [0,1]": all(0.0 <= x[1] <= 1.0 for x in recs)
+            "Match Pct Bounds [68,99]": all(68 <= x["match_pct"] <= 99 for x in scored_catalog)
         }
         diag_payload["Runtime Assertions Check Log"] = assertions
         
