@@ -7,7 +7,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
 # ==========================================
-# 1. PAGE CONFIG & NETFLIX DARK THEME
+# 1. PAGE CONFIG & NETFLIX STYLING
 # ==========================================
 st.set_page_config(
     page_title="Netflix - Pick What You Like",
@@ -184,7 +184,7 @@ st.markdown("""
     /* Selected Poster Card Highlight */
     .selected-card {
         border: 2px solid #E50914 !important;
-        box-shadow: 0 0 15px rgba(229, 9, 20, 0.45);
+        box-shadow: 0 0 15px rgba(229, 9, 20, 0.5);
     }
     .selected-card::after {
         content: "✓";
@@ -482,9 +482,9 @@ def load_catalog() -> List[Dict[str, Any]]:
     return [
         {
             "id": 1, "show_id": "s1", "type": "TV Show", "title": "Stranger Things", "language": "English",
-            "genres": ["Sci-Fi", "Horror", "Thriller"], "release_year": 2022, "rating": "TV-14", "duration": "4 Seasons",
+            "genres": ["Sci-Fi", "Horror", "Thriller"], "release_year": 2016, "rating": "TV-14", "duration": "4 Seasons",
             "director": "The Duffer Brothers", "cast": "Millie Bobby Brown, Winona Ryder, David Harbour",
-            "poster": "https://images.unsplash.com/photo-1626814026160-2237a95fc5a0?q=80&w=400&auto=format&fit=crop",
+            "poster": "https://image.tmdb.org/t/p/w500/49WJfeN0moxb9IPfGn88qbuYA2m.jpg",
             "banner": "https://images.unsplash.com/photo-1574375927938-d5a98e8edd86?q=80&w=1200&auto=format&fit=crop",
             "description": "When a young boy vanishes, a small town uncovers a mystery involving secret experiments, terrifying supernatural forces and one strange little girl."
         },
@@ -492,39 +492,39 @@ def load_catalog() -> List[Dict[str, Any]]:
             "id": 2, "show_id": "s2", "type": "TV Show", "title": "Squid Game", "language": "Korean",
             "genres": ["Thriller", "Drama", "Action"], "release_year": 2021, "rating": "TV-MA", "duration": "1 Season",
             "director": "Hwang Dong-hyuk", "cast": "Lee Jung-jae, Park Hae-soo, Wi Ha-jun",
-            "poster": "https://images.unsplash.com/photo-1627856013091-fed6e4e30025?q=80&w=400&auto=format&fit=crop",
+            "poster": "https://image.tmdb.org/t/p/w500/dDlE31331PFiP1A16C4M1T3C1A1.jpg",
             "banner": "https://images.unsplash.com/photo-1542204172-e7052809f852?q=80&w=1200&auto=format&fit=crop",
             "description": "Hundreds of cash-strapped players accept a strange invitation to compete in children's games. Inside, a tempting prize awaits with deadly high stakes."
         },
         {
             "id": 3, "show_id": "s3", "type": "TV Show", "title": "Sacred Games", "language": "Hindi",
-            "genres": ["Thriller", "Crime", "Action"], "release_year": 2019, "rating": "TV-MA", "duration": "2 Seasons",
+            "genres": ["Thriller", "Crime", "Drama"], "release_year": 2018, "rating": "TV-MA", "duration": "2 Seasons",
             "director": "Vikramaditya Motwane, Anurag Kashyap", "cast": "Saif Ali Khan, Nawazuddin Siddiqui, Radhika Apte",
-            "poster": "https://images.unsplash.com/photo-1536440136628-849c177e76a1?q=80&w=400&auto=format&fit=crop",
+            "poster": "https://upload.wikimedia.org/wikipedia/en/d/d8/Sacred_Games_title_card.png",
             "banner": "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?q=80&w=1200&auto=format&fit=crop",
             "description": "A link in their pasts leads an honest cop to a fugitive gang boss whose cryptic warning spurs a quest to save Mumbai from a cataclysmic threat."
         },
         {
             "id": 4, "show_id": "s4", "type": "TV Show", "title": "Money Heist", "language": "Spanish",
-            "genres": ["Thriller", "Action", "Crime"], "release_year": 2021, "rating": "TV-MA", "duration": "5 Seasons",
+            "genres": ["Action", "Crime", "Thriller"], "release_year": 2017, "rating": "TV-MA", "duration": "5 Seasons",
             "director": "Álex Pina", "cast": "Álvaro Morte, Úrsula Corberó, Itziar Ituño",
-            "poster": "https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?q=80&w=400&auto=format&fit=crop",
+            "poster": "https://image.tmdb.org/t/p/w500/reKs8A331c13A2c4X5A05121.jpg",
             "banner": "https://images.unsplash.com/photo-1509281373149-e957c6296406?q=80&w=1200&auto=format&fit=crop",
             "description": "Eight thieves take hostages and lock themselves in the Royal Mint of Spain as a criminal mastermind manipulates the police to carry out his plan."
         },
         {
             "id": 5, "show_id": "s5", "type": "TV Show", "title": "Demon Slayer", "language": "Japanese",
-            "genres": ["Anime", "Action", "Sci-Fi"], "release_year": 2021, "rating": "TV-14", "duration": "2 Seasons",
+            "genres": ["Anime", "Action", "Fantasy"], "release_year": 2019, "rating": "TV-MA", "duration": "2 Seasons",
             "director": "Haruo Sotozaki", "cast": "Natsuki Hanae, Akari Kito, Yoshitsugu Matsuoka",
-            "poster": "https://images.unsplash.com/photo-1578632767115-351597cf2477?q=80&w=400&auto=format&fit=crop",
+            "poster": "https://image.tmdb.org/t/p/w500/xUfRQA2alT3A3pI392215A42.jpg",
             "banner": "https://images.unsplash.com/photo-1528164344705-47542687000d?q=80&w=1200&auto=format&fit=crop",
             "description": "After a demon attack slaughters his family, a kindhearted boy joins the Demon Slayer Corps to hunt down demons and cure his cursed younger sister."
         },
         {
-            "id": 6, "show_id": "s6", "type": "TV Show", "title": "Narcos", "language": "Spanish",
-            "genres": ["Thriller", "Crime", "Drama"], "release_year": 2017, "rating": "TV-MA", "duration": "3 Seasons",
+            "id": 6, "show_id": "s6", "type": "TV Show", "title": "Narcos", "language": "English",
+            "genres": ["Crime", "Drama", "Action"], "release_year": 2015, "rating": "TV-MA", "duration": "3 Seasons",
             "director": "Andrés Baiz", "cast": "Wagner Moura, Boyd Holbrook, Pedro Pascal",
-            "poster": "https://images.unsplash.com/photo-1585647347384-2593bc35786b?q=80&w=400&auto=format&fit=crop",
+            "poster": "https://upload.wikimedia.org/wikipedia/en/0/0a/Narcos_season_1_poster.jpg",
             "banner": "https://images.unsplash.com/photo-1507608869274-d3177c8bb4c7?q=80&w=1200&auto=format&fit=crop",
             "description": "The true story of Colombia's infamously violent and powerful drug cartels, and the law enforcement struggles to bring down kingpin Pablo Escobar."
         },
@@ -532,7 +532,7 @@ def load_catalog() -> List[Dict[str, Any]]:
             "id": 7, "show_id": "s7", "type": "Movie", "title": "Inception", "language": "English",
             "genres": ["Sci-Fi", "Action", "Thriller"], "release_year": 2010, "rating": "PG-13", "duration": "148 min",
             "director": "Christopher Nolan", "cast": "Leonardo DiCaprio, Joseph Gordon-Levitt, Elliot Page",
-            "poster": "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?q=80&w=400&auto=format&fit=crop",
+            "poster": "https://image.tmdb.org/t/p/w500/oYuLE13111A2s1A1A5123.jpg",
             "banner": "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?q=80&w=1200&auto=format&fit=crop",
             "description": "A thief who steals corporate secrets through the use of dream-sharing technology is given the inverse task of planting an idea into the mind of a C.E.O."
         },
@@ -540,47 +540,47 @@ def load_catalog() -> List[Dict[str, Any]]:
             "id": 8, "show_id": "s8", "type": "Movie", "title": "The Matrix", "language": "English",
             "genres": ["Sci-Fi", "Action"], "release_year": 1999, "rating": "R", "duration": "136 min",
             "director": "Lana Wachowski, Lilly Wachowski", "cast": "Keanu Reeves, Laurence Fishburne, Carrie-Anne Moss",
-            "poster": "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?q=80&w=400&auto=format&fit=crop",
+            "poster": "https://image.tmdb.org/t/p/w500/f89U311A2A441221.jpg",
             "banner": "https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=1200&auto=format&fit=crop",
             "description": "A computer hacker learns from mysterious rebels about the true nature of his reality and his role in the war against its controllers."
         },
         {
             "id": 9, "show_id": "s9", "type": "TV Show", "title": "Mirzapur", "language": "Hindi",
-            "genres": ["Thriller", "Crime", "Action"], "release_year": 2020, "rating": "TV-MA", "duration": "2 Seasons",
+            "genres": ["Action", "Crime", "Thriller"], "release_year": 2018, "rating": "TV-MA", "duration": "2 Seasons",
             "director": "Karan Anshuman, Gurmmeet Singh", "cast": "Pankaj Tripathi, Ali Fazal, Divyendu Sharma",
-            "poster": "https://images.unsplash.com/photo-1595152772835-219674b2a8a6?q=80&w=400&auto=format&fit=crop",
+            "poster": "https://upload.wikimedia.org/wikipedia/en/3/3c/Mirzapur_poster.jpg",
             "banner": "https://images.unsplash.com/photo-1533928298208-27ff66555d8d?q=80&w=1200&auto=format&fit=crop",
             "description": "A shocking incident at a wedding procession ignites a series of events, leading to a power struggle, crime, and lawlessness in northern India."
         },
         {
             "id": 10, "show_id": "s10", "type": "TV Show", "title": "Crash Landing on You", "language": "Korean",
-            "genres": ["Romance", "Comedy", "Drama"], "release_year": 2020, "rating": "TV-14", "duration": "1 Season",
+            "genres": ["Romance", "Comedy", "Drama"], "release_year": 2019, "rating": "TV-14", "duration": "1 Season",
             "director": "Lee Jeong-hyo", "cast": "Hyun Bin, Son Ye-jin, Seo Ji-hye",
-            "poster": "https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?q=80&w=400&auto=format&fit=crop",
+            "poster": "https://upload.wikimedia.org/wikipedia/en/6/64/Crash_Landing_on_You_main_poster.jpg",
             "banner": "https://images.unsplash.com/photo-1518609878373-06d740f60d8b?q=80&w=1200&auto=format&fit=crop",
             "description": "A South Korean paraglider accidentally crosses the border into North Korea, where a sympathetic military officer hides and protects her."
         },
         {
-            "id": 11, "show_id": "s11", "type": "Movie", "title": "My Name", "language": "Korean",
-            "genres": ["Action", "Thriller", "Crime"], "release_year": 2021, "rating": "TV-MA", "duration": "120 min",
+            "id": 11, "show_id": "s11", "type": "TV Show", "title": "My Name", "language": "Korean",
+            "genres": ["Action", "Crime", "Thriller"], "release_year": 2021, "rating": "TV-MA", "duration": "1 Season",
             "director": "Kim Jin-min", "cast": "Han So-hee, Park Hee-soon, Ahn Bo-hyun",
-            "poster": "https://images.unsplash.com/photo-1599839575945-a9e5af0c3fa5?q=80&w=400&auto=format&fit=crop",
+            "poster": "https://upload.wikimedia.org/wikipedia/en/0/0b/My_Name_TV_series.jpeg",
             "banner": "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?q=80&w=1200&auto=format&fit=crop",
             "description": "Following her father's murder, a revenge-driven woman puts her trust in a powerful drug lord and goes undercover as a police officer."
         },
         {
             "id": 12, "show_id": "s12", "type": "Movie", "title": "3 Idiots", "language": "Hindi",
-            "genres": ["Comedy", "Drama", "Romance"], "release_year": 2009, "rating": "PG-13", "duration": "170 min",
+            "genres": ["Comedy", "Drama"], "release_year": 2009, "rating": "PG-13", "duration": "170 min",
             "director": "Rajkumar Hirani", "cast": "Aamir Khan, Kareena Kapoor, R. Madhavan",
-            "poster": "https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=400&auto=format&fit=crop",
+            "poster": "https://upload.wikimedia.org/wikipedia/en/b/b9/3_Idiots_poster.jpg",
             "banner": "https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?q=80&w=1200&auto=format&fit=crop",
             "description": "Two friends search for their long-lost college companion, recalling his philosophies that challenged academic educational systems."
         },
         {
             "id": 13, "show_id": "s13", "type": "Movie", "title": "Dangal", "language": "Hindi",
-            "genres": ["Action", "Drama", "Biography"], "release_year": 2016, "rating": "PG", "duration": "161 min",
+            "genres": ["Action", "Drama"], "release_year": 2016, "rating": "PG", "duration": "161 min",
             "director": "Nitesh Tiwari", "cast": "Aamir Khan, Sakshi Tanwar, Fatima Sana Shaikh",
-            "poster": "https://images.unsplash.com/photo-1552674605-db6ffd4facb5?q=80&w=400&auto=format&fit=crop",
+            "poster": "https://upload.wikimedia.org/wikipedia/en/9/99/Dangal_Poster.jpg",
             "banner": "https://images.unsplash.com/photo-1571008887538-b36bb32f4571?q=80&w=1200&auto=format&fit=crop",
             "description": "A former wrestler struggles to coach his daughters towards Commonwealth Games wrestling glory, fighting societal prejudices."
         },
@@ -588,57 +588,25 @@ def load_catalog() -> List[Dict[str, Any]]:
             "id": 14, "show_id": "s14", "type": "Movie", "title": "Interstellar", "language": "English",
             "genres": ["Sci-Fi", "Drama"], "release_year": 2014, "rating": "PG-13", "duration": "169 min",
             "director": "Christopher Nolan", "cast": "Matthew McConaughey, Anne Hathaway, Jessica Chastain",
-            "poster": "https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=400&auto=format&fit=crop",
+            "poster": "https://image.tmdb.org/t/p/w500/gEU2Q21A1A51123.jpg",
             "banner": "https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?q=80&w=1200&auto=format&fit=crop",
             "description": "A team of space explorers travels through a newly discovered wormhole in search of a new home planet for dying humanity on Earth."
         },
         {
             "id": 15, "show_id": "s15", "type": "Movie", "title": "Spirited Away", "language": "Japanese",
-            "genres": ["Anime", "Sci-Fi", "Fantasy"], "release_year": 2001, "rating": "PG", "duration": "125 min",
+            "genres": ["Anime", "Fantasy"], "release_year": 2001, "rating": "PG", "duration": "125 min",
             "director": "Hayao Miyazaki", "cast": "Rumi Hiiragi, Miyu Irino, Mari Natsuki",
-            "poster": "https://images.unsplash.com/photo-1507838153414-b4b713384a76?q=80&w=400&auto=format&fit=crop",
+            "poster": "https://upload.wikimedia.org/wikipedia/en/d/d4/Spirited_Away_poster.png",
             "banner": "https://images.unsplash.com/photo-1501854140801-50d01698950b?q=80&w=1200&auto=format&fit=crop",
             "description": "A young girl wanders into a spirit world ruled by gods and witches. She must work in a bathhouse to free her cursed parents."
         },
         {
             "id": 16, "show_id": "s16", "type": "TV Show", "title": "Our Planet", "language": "English",
-            "genres": ["Documentaries", "Nature"], "release_year": 2019, "rating": "TV-PG", "duration": "1 Season",
+            "genres": ["Documentaries"], "release_year": 2019, "rating": "TV-PG", "duration": "1 Season",
             "director": "Alastair Fothergill", "cast": "David Attenborough",
-            "poster": "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?q=80&w=400&auto=format&fit=crop",
+            "poster": "https://upload.wikimedia.org/wikipedia/en/b/bd/Our_Planet_poster.jpg",
             "banner": "https://images.unsplash.com/photo-1433832597046-4f10e10ac764?q=80&w=1200&auto=format&fit=crop",
             "description": "Experience our planet's natural beauty and examine how climate change impacts all living creatures in this spectacular nature documentary."
-        },
-        {
-            "id": 17, "show_id": "s17", "type": "Movie", "title": "The Conjuring", "language": "English",
-            "genres": ["Horror", "Thriller"], "release_year": 2013, "rating": "R", "duration": "112 min",
-            "director": "James Wan", "cast": "Vera Farmiga, Patrick Wilson, Lili Taylor",
-            "poster": "https://images.unsplash.com/photo-1505635330383-db29f4ee3c37?q=80&w=400&auto=format&fit=crop",
-            "banner": "https://images.unsplash.com/photo-1518020382113-a7e8fc38eac9?q=80&w=1200&auto=format&fit=crop",
-            "description": "Paranormal investigators Ed and Lorraine Warren work to help a family terrorized by a dark presence in their farmhouse."
-        },
-        {
-            "id": 18, "show_id": "s18", "type": "Movie", "title": "Minnal Murali", "language": "Malayalam",
-            "genres": ["Action", "Comedy", "Sci-Fi"], "release_year": 2021, "rating": "TV-14", "duration": "158 min",
-            "director": "Basil Joseph", "cast": "Tovino Thomas, Guru Somasundaram",
-            "poster": "https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?q=80&w=400&auto=format&fit=crop",
-            "banner": "https://images.unsplash.com/photo-1472214222541-d510753a4907?q=80&w=1200&auto=format&fit=crop",
-            "description": "An ordinary tailor gains superpower lightning speed after being struck by lightning, becoming the savior of his hometown."
-        },
-        {
-            "id": 19, "show_id": "s19", "type": "TV Show", "title": "Emily in Paris", "language": "English",
-            "genres": ["Romance", "Comedy", "Drama"], "release_year": 2020, "rating": "TV-MA", "duration": "3 Seasons",
-            "director": "Darren Star", "cast": "Lily Collins, Philippine Leroy-Beaulieu",
-            "poster": "https://images.unsplash.com/photo-1499856871958-5b9627545d1a?q=80&w=400&auto=format&fit=crop",
-            "banner": "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?q=80&w=1200&auto=format&fit=crop",
-            "description": "A young American marketing executive gets her dream job in Paris, navigating French culture, romance, and friendship."
-        },
-        {
-            "id": 20, "show_id": "s20", "type": "Movie", "title": "Super Deluxe", "language": "Tamil",
-            "genres": ["Drama", "Comedy", "Thriller"], "release_year": 2019, "rating": "TV-MA", "duration": "176 min",
-            "director": "Thiagarajan Kumararaja", "cast": "Vijay Sethupathi, Fahadh Faasil, Samantha Ruth Prabhu",
-            "poster": "https://images.unsplash.com/photo-1509281373149-e957c6296406?q=80&w=400&auto=format&fit=crop",
-            "banner": "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?q=80&w=1200&auto=format&fit=crop",
-            "description": "An angry boy, a cheating wife, a transgender woman, and a priest find themselves in unexpected predicaments on a fateful day."
         }
     ]
 
@@ -1169,7 +1137,7 @@ with st.expander("🛠️ Onboarding Debug Vector Console", expanded=False):
         ]
         
         assertions = {
-            "Catalog Size Valid (Rows == 20)": len(catalog) == 20,
+            "Catalog Size Valid (Rows == 16)": len(catalog) == 16,
             "Language Selections Valid": len(st.session_state.selected_languages) > 0,
             "Genre Preference Count >= 3": len(st.session_state.selected_genres) >= 3,
             "Seed Movie Selections == 3": len(st.session_state.selected_titles) == 3,
