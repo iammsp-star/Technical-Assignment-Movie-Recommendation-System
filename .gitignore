@@ -1,0 +1,27 @@
+# Python virtualenv and caching
+venv/
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.ipynb_checkpoints/
+
+# Node dependencies
+node_modules/
+.npm/
+
+# Local databases and logs
+*.db
+*.log
+.gemini/
+.agents/
+.system_generated/
+*task-*.log
+*.log.*
+/netflix.db
+
+# OS files
+.DS_Store
+Thumbs.db
