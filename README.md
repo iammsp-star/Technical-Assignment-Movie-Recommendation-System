@@ -3,8 +3,10 @@
 A full-stack, responsive movie recommendation engine featuring a **3-Stage Pipeline Architecture** (Ingestion, Multi-Vector TF-IDF Core Logic, and Presentation/Inspection layer). Adheres to the Karpathy-Ponytail engineering philosophy focusing on first-principles implementation, zero placeholders, and strict runtime assertions.
 
 ## 🚀 Live App URL
-Once running locally, visit the applications at:
-👉 **Onboarding Wizard & Personalized Homepage:** **[http://localhost:8501/](http://localhost:8501/)**
+Visit the globally hosted demo application:
+👉 **Live Onboarding Wizard & Personalized Homepage:** **[https://technical-assignment-movie-recommendation.streamlit.app/](https://technical-assignment-movie-recommendation.streamlit.app/)**
+
+*(For local execution)*
 👉 **Main Content Explorer & Recommendations REST API:** **[http://localhost:8000/](http://localhost:8000/)**
 
 ---

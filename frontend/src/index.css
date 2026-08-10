@@ -235,6 +235,7 @@ body {
   color: var(--text-secondary);
   margin-bottom: 1rem;
   display: -webkit-box;
+  line-clamp: 2;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
@@ -394,6 +395,7 @@ body {
   font-size: 0.9rem;
   font-weight: 700;
   display: -webkit-box;
+  line-clamp: 3;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
@@ -624,6 +626,7 @@ body {
   font-size: 0.85rem;
   font-weight: 700;
   display: -webkit-box;
+  line-clamp: 2;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
